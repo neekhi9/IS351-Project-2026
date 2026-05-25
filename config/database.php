@@ -34,7 +34,7 @@ return [
        
         'pgsql' => [
             'driver' => 'pgsql',
-            'url' => env('postgresql://is351_project_2026_user:vHUGKbkj94luVXv47pIYe4r1HS9thn2z@dpg-d89vu777f7vs73cl5kt0-a.singapore-postgres.render.com/is351_project_2026'),
+            'url' => env('postgresql://is351_project_2026_user:vHUGKbkj94luVXv47pIYe4r1HS9thn2z@dpg-d89vu777f7vs73cl5kt0-a/is351_project_2026'),
             'host' => env('DB_HOST', 'dpg-d89vu777f7vs73cl5kt0-a.singapore-postgres.render.com/is351_project_2026'),
             'port' => env('DB_PORT', '5432'),
             'database' => env('DB_DATABASE', 'is351_project_2026'),
