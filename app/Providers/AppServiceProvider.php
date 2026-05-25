@@ -21,10 +21,11 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
-        if ($this->app->environment('production')) {
+       {
+        if (env('APP_ENV') === 'production') {
             URL::forceScheme('https');
         }
+    }
 
         // Give full access to users with the 'admin' role
         Gate::before(function (User $user, string $ability = null) {
