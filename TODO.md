@@ -1,6 +1,5 @@
 # TODO
 
-- [x] Update welcome view to use HTTPS-safe CSS asset URL.
-- [x] Update AppServiceProvider to force HTTPS scheme in production.
-- [x] Add TrustProxies middleware configuration for forwarded headers/proxies.
-- [x] Run Laravel cache clear command and verify no errors.
+- [x] Replace `secure_asset('css/welcome.css')` with `asset('css/welcome.css')` in welcome view.
+- [x] Clear Laravel caches and compiled files.
+- [ ] Verify welcome page no longer throws 500 and CSS 404 is resolved.
