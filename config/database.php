@@ -31,19 +31,7 @@ return [
 
     'connections' => [
 
-        'pgsql' => [
-            'driver' => 'pgsql',
-            'url' => env('DB_URL'),
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
-            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-            'busy_timeout' => null,
-            'journal_mode' => null,
-            'synchronous' => null,
-            'transaction_mode' => 'DEFERRED',
-        ],
-
-
+       
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('postgresql://is351_project_2026_user:vHUGKbkj94luVXv47pIYe4r1HS9thn2z@dpg-d89vu777f7vs73cl5kt0-a.singapore-postgres.render.com/is351_project_2026'),
