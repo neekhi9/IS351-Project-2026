@@ -27,9 +27,9 @@ class AppServiceProvider extends ServiceProvider
         }
     }
 
-        // Give full access to users with the 'admin' role
-        Gate::before(function (User $user, string $ability = null) {
-            return $user->hasRole('admin') ? true : null;
-        });
-    }
+    //     // Give full access to users with the 'admin' role
+    //     Gate::before(function (User $user, string $ability = null) {
+    //         return $user->hasRole('admin') ? true : null;
+    //     });
+    // }
 }
