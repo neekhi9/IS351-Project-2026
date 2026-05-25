@@ -1,5 +1,9 @@
 # TODO
 
-- [x] Replace `secure_asset('css/welcome.css')` with `asset('css/welcome.css')` in welcome view.
-- [x] Clear Laravel caches and compiled files.
-- [ ] Verify welcome page no longer throws 500 and CSS 404 is resolved.
+- [x] Inspect auth routes and controllers for login/register flow.
+- [x] Inspect production proxy/HTTPS middleware configuration.
+- [x] Inspect database and session configuration for Render compatibility.
+- [x] Fix Linux case-sensitive asset path for welcome CSS.
+- [x] Make session driver safe by default for environments without `sessions` table migration applied.
+- [ ] Verify app boots and config is valid after changes.
+- [ ] Provide Render deploy/cache checklist to apply fixes.
