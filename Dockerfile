@@ -18,21 +18,28 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Composer (copy from official composer image)
+# System deps
+RUN apt-get update && apt-get install -y \
+    git unzip libzip-dev libpng-dev libonig-dev libxml2-dev \
+    && docker-php-ext-install pdo pdo_mysql zip
+
+# Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy existing application
-COPY . /var/www/html
+# App files
+COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+# Install PHP deps
+RUN composer install --no-dev --optimize-autoloader
 
-# Set permissions for Laravel
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Laravel optimizations (optional; ignore if env not ready at build time)
+# RUN php artisan config:cache || true
+# RUN php artisan route:cache || true
+# RUN php artisan view:cache || true
 
-# Expose php-fpm port
-EXPOSE 9000
+EXPOSE 8080
+
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
 
 # Start php-fpm
 CMD ["php-fpm"]
