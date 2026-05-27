@@ -497,86 +497,7 @@
           </div>
         </div>
 
-        <!-- Company Details -->
-        <div class="form-section" id="company-details">
-          <label class="section-label">Company Details <span class="required">*</span></label>
-
-          <!-- List of Directors -->
-          <div class="row mb-3">
-            <div class="col-md-3">
-              <label class="form-label">List of Directors <span class="required">*</span></label>
-            </div>
-            <div class="col-md-9">
-              <div id="directors-wrapper" class="row g-2 mb-2">
-                <div class="col-sm-8">
-                  <input type="text" class="form-control" placeholder="Director" name="directors[]" id="director_0"/>
-                  <span id="director_0_error" class="error-text"></span>
-                </div>
-                <div class="col-sm-4">
-                  <button type="button" class="btn add-btn w-100" id="addDirector">Add More</button>
-                </div>
-              </div>
-              <span id="directors_error" class="error-text"></span>
-            </div>
-          </div>
-
-          <!-- Company Registration Number + ROC Upload -->
-          <div class="row mb-3">
-            <div class="col-md-3">
-              <label class="form-label">Enter Company Registration Number <span class="required">*</span></label>
-            </div>
-            <div class="col-md-5">
-              <input type="text" class="form-control" placeholder="Enter Company Registration Number" name="com_reg_num" id="com_reg_num"/>
-              <span id="com_reg_num_error" class="error-text"></span>
-            </div>
-            <div class="col-md-4">
-              <input type="file" id="rocFile" class="d-none" name="roc_file">
-<label for="rocFile" class="btn upload-btn w-100">Upload ROC Certificate</label>
-              <span class="file-name text-muted ms-2" id="rocFile_name"></span>
-              <span id="roc_file_error" class="error-text"></span>
-            </div>
-          </div>
-
-          <!-- Company TIN Number + TIN Letter Upload -->
-          <div class="row mb-3">
-            <div class="col-md-3">
-              <label class="form-label">Enter Company TIN Number <span class="required">*</span></label>
-            </div>
-            <div class="col-md-5">
-              <input type="text" class="form-control" placeholder="Enter Company TIN Number" name="tin_number" id="tin_number"/>
-              <span id="tin_number_error" class="error-text"></span>
-            </div>
-            <div class="col-md-4">
-              <input type="file" id="tinLetter" class="d-none" name="tin_letter"/>
-<label for="tinLetter" class="btn upload-btn w-100">Upload TIN Letter</label>
-              <span class="file-name text-muted ms-2" id="tinLetter_name"></span>
-              <span id="tin_letter_error" class="error-text"></span>
-            </div>
-          </div>
-
-          <!-- Wireman License Number + Upload + (+) -->
-          <div id="wireman-licenses">
-            <div class="row mb-3 wireman-row">
-              <div class="col-md-3">
-                <label class="form-label">Wireman License Number <span class="required">*</span></label>
-              </div>
-              <div class="col-md-5">
-                <input type="text" class="form-control" placeholder="Wireman License Number" name="wireman_l_num[]" id="wireman_l_num_0" />
-                <span id="wireman_l_num_0_error" class="error-text"></span>
-              </div>
-              <div class="col-md-3">
-                <input type="file" id="wiremanFile0" class="d-none" name="wireman_license[]">
-<label for="wiremanFile0" class="btn upload-btn w-100">Upload Wireman's Licence Copy</label>
-                <span class="file-name text-muted ms-2" id="wiremanFile0_name"></span>
-                <span id="wireman_license_0_error" class="error-text"></span>
-              </div>
-              <div class="col-md-1 d-grid">
-                <button type="button" class="btn btn-outline-secondary" id="addWireman">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      
         <!-- Submit -->
         <div class="form-actions">
           <button type="submit">Submit to Request for Portal Registration</button>
@@ -722,39 +643,7 @@
           </div>
         </div>
 
-        <div class="row mb-3">
-          <div class="col-md-3">
-            <label class="form-label">Additional Information <span class="required">*</span></label>
-          </div>
-          <div class="col-md-9">
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Enter TIN number" name="tin_number_ind" id="tin_number_ind">
-                <span id="tin_number_ind_error" class="error-text"></span>
-              </div>
-              <div class="col-md-6">
-                <input type="file" id="tinFileInd" class="d-none" name="tin_letter_ind">
-<label for="tinFileInd" class="btn upload-btn w-100">Upload TIN Letter</label>
-                <span class="file-name text-muted ms-2" id="tinFileInd_name"></span>
-                <span id="tin_letter_ind_error" class="error-text"></span>
-              </div>
-            </div>
-            
-            <div class="row">
-              <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Wireman License Number" name="wireman_l_num_ind" id="wireman_l_num_ind">
-                <span id="wireman_l_num_ind_error" class="error-text"></span>
-              </div>
-              <div class="col-md-6">
-                <input type="file" id="wiremanFileInd" class="d-none" name="wireman_license_ind">
-<label for="wiremanFileInd" class="btn upload-btn w-100">Upload Wireman's Licence Copy</label>
-                <span class="file-name text-muted ms-2" id="wiremanFileInd_name"></span>
-                <span id="wireman_license_ind_error" class="error-text"></span>
-              </div>
-            </div>
-          </div>
-        </div>
-        
+      
         <!-- Submit -->
         <div class="form-actions">
           <button type="submit">Submit to Request for Portal Registration</button>
