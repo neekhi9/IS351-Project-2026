@@ -51,12 +51,12 @@
         <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
             <main  class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-4xl lg:flex-row" style="background-color: #f1edec;">
                 <div  style="background-color: #f1edec;" class="fw-bold text-center text-[60px] leading-[100px] flex-1 p-6 pb-12 lg:p-20 bg-white dark:bg-[#161615] dark:text-[#EDEDEC] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d] rounded-bl-lg rounded-br-lg lg:rounded-tl-lg lg:rounded-br-none">
-                    <h1 class="mb-4 fw-bold text-center" style="font-weight: bold; text-align: center; font-size: 30px;">Welcome to the Energy Generation License Portal</h1>
-                    <p class="mb-6 text-[#706f6c] dark:text-[#A1A09A] text-base leading-relaxed">
+                    <h1 class="mb-4 fw-bold text-center" style="font-weight: bold; text-align: center; font-size: 30px;">Welcome to IS351 Project 2026</h1>
+                    <!-- <p class="mb-6 text-[#706f6c] dark:text-[#A1A09A] text-base leading-relaxed">
                         Get started with your energy generation license application. Our portal makes it easy to register and manage your renewable energy projects in Fiji.
-                    </p>
+                    </p> -->
                     
-                    <div class="mb-6">
+                    <!-- <div class="mb-6">
                         <h2 class="mb-3 font-medium text-lg" style="font-weight: bold;">What you can do:</h2>
                         <ul class="flex flex-col mb-4 lg:mb-6 space-y-3">
                             <li class="flex items-center gap-4 py-2 relative before:border-l before:border-[#e3e3e0] dark:before:border-[#3E3E3A] before:top-1/2 before:bottom-0 before:left-[0.4rem] before:absolute">
@@ -80,7 +80,7 @@
                                 </span>
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
                     
                     <div class="flex gap-3 text-sm leading-normal" style="justify-content: center;" >
                         <a href="{{ route('registration.create') }}" class="inline-block dark:bg-[#0A5C45] dark:border-[#0A5C45] dark:text-white dark:hover:bg-[#0066cc] dark:hover:border-[#0066cc] hover:bg-[#0066cc] hover:border-[#0066cc] px-8 py-3 bg-[#0A5C45] rounded-sm border border-[#0A5C45] text-white text-base font-medium leading-normal transition-all duration-300" style="background-color: #4c1130; color:white !important; text-align: center; padding: 20px; color: black;">
