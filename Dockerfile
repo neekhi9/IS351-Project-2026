@@ -1,50 +1,57 @@
 FROM php:8.2-fpm
 
-# Install system dependencies
+# System dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     zip \
     unzip \
+    nodejs \
+    npm \
     libpq-dev \
     libonig-dev \
     libzip-dev \
-    libicu-dev
+    libicu-dev \
+    libxml2-dev \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev
 
-# Install PHP extensions
+# PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+
 RUN docker-php-ext-install \
     pdo \
     pdo_pgsql \
     mbstring \
     bcmath \
     zip \
-    intl
-
-# Install Node.js 
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs
+    intl \
+    exif \
+    pcntl \
+    gd
 
 # Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
+# Copy composer files first
 COPY composer.json composer.lock ./
 
-# Install PHP dependencies
+# Install dependencies
 RUN composer install \
     --no-dev \
     --no-interaction \
     --prefer-dist \
     --optimize-autoloader \
-    --no-scripts
+    -vvv
 
+# Copy app
 COPY . .
 
-
-# Install Node dependencies + build Vite
+# Frontend
 RUN npm install
-
 RUN npm run build
 
 CMD php artisan serve --host=0.0.0.0 --port=$PORT
