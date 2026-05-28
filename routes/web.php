@@ -56,9 +56,21 @@ Route::post('/resubmit/{token}', [\App\Http\Controllers\ResubmissionController::
 
 // OTP passwordless login routes
 Route::get('/login/otp/request', [\App\Http\Controllers\Auth\OtpAuthController::class, 'requestForm'])->name('otp.request');
-Route::post('/login/otp/send-link', [\App\Http\Controllers\Auth\OtpAuthController::class, 'sendLink'])->name('otp.sendLink');
+Route::post('/login/otp/send-link', [\App\Http\Controllers\Auth\OtpAuthController::class, 'sendLink'])
+    ->middleware('throttle:5,1')
+    ->name('otp.sendLink');
 Route::get('/login/otp/verify', [\App\Http\Controllers\Auth\OtpAuthController::class, 'verifyForm'])->name('otp.verifyForm');
-Route::post('/login/otp/verify', [\App\Http\Controllers\Auth\OtpAuthController::class, 'verify'])->name('otp.verify');
+Route::post('/login/otp/verify', [\App\Http\Controllers\Auth\OtpAuthController::class, 'verify'])
+    ->middleware('throttle:6,1')
+    ->name('otp.verify');
+
+// Google OAuth routes
+Route::get('/auth/google/redirect', [\App\Http\Controllers\Auth\GoogleAuthController::class, 'redirect'])
+    ->middleware('guest')
+    ->name('google.redirect');
+Route::get('/auth/google/callback', [\App\Http\Controllers\Auth\GoogleAuthController::class, 'callback'])
+    ->middleware('guest')
+    ->name('google.callback');
 
 // Protected file serving routes
 Route::middleware(['auth'])->group(function () {

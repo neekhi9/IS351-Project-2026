@@ -116,8 +116,8 @@ class OtpAuthController extends Controller
     public function verify(Request $request)
     {
         $validated = $request->validate([
-            'token' => 'required|string',
-            'code' => 'required|string|size:6',
+            'token' => 'required|string|uuid',
+            'code' => 'required|digits:6',
         ]);
 
         $otp = OtpCode::where('link_token', $validated['token'])->first();
@@ -146,6 +146,7 @@ class OtpAuthController extends Controller
         $otp->save();
 
         Auth::login($user);
+        $request->session()->regenerate();
 
         return redirect()->intended(route('home'));
     }

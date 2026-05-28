@@ -6,6 +6,58 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RegistrationRequest extends FormRequest
 {
+    protected function sanitizeString(?string $value): ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return trim(strip_tags($value));
+    }
+
+    protected function sanitizeArrayStrings(?array $values): array
+    {
+        if (!$values) {
+            return [];
+        }
+
+        return array_map(function ($value) {
+            return is_string($value) ? $this->sanitizeString($value) : $value;
+        }, $values);
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'account_type' => $this->sanitizeString($this->input('account_type')),
+            'organization_name' => $this->sanitizeString($this->input('organization_name')),
+            'organization_type' => $this->sanitizeString($this->input('organization_type')),
+            'designation_business' => $this->sanitizeString($this->input('designation_business')),
+            'title' => $this->sanitizeString($this->input('title')),
+            'first_name' => $this->sanitizeString($this->input('first_name')),
+            'surname' => $this->sanitizeString($this->input('surname')),
+            'address' => $this->sanitizeString($this->input('address')),
+            'street' => $this->sanitizeString($this->input('street')),
+            'suburb' => $this->sanitizeString($this->input('suburb')),
+            'email' => strtolower((string) $this->sanitizeString($this->input('email'))),
+            'alt_email' => strtolower((string) $this->sanitizeString($this->input('alt_email'))),
+            'com_reg_num' => preg_replace('/\D+/', '', (string) $this->input('com_reg_num')),
+            'tin_number' => preg_replace('/\D+/', '', (string) $this->input('tin_number')),
+            'wireman_l_num' => $this->sanitizeArrayStrings($this->input('wireman_l_num')),
+            'directors' => $this->sanitizeArrayStrings($this->input('directors')),
+
+            'title_ind' => $this->sanitizeString($this->input('title_ind')),
+            'first_name_ind' => $this->sanitizeString($this->input('first_name_ind')),
+            'surname_ind' => $this->sanitizeString($this->input('surname_ind')),
+            'address_ind' => $this->sanitizeString($this->input('address_ind')),
+            'street_ind' => $this->sanitizeString($this->input('street_ind')),
+            'suburb_ind' => $this->sanitizeString($this->input('suburb_ind')),
+            'individualEmail' => strtolower((string) $this->sanitizeString($this->input('individualEmail'))),
+            'alt_email_ind' => strtolower((string) $this->sanitizeString($this->input('alt_email_ind'))),
+            'tin_number_ind' => preg_replace('/\D+/', '', (string) $this->input('tin_number_ind')),
+            'wireman_l_num_ind' => $this->sanitizeString($this->input('wireman_l_num_ind')),
+        ]);
+    }
     /**
      * Determine if the user is authorized to make this request.
      */

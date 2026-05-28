@@ -57,7 +57,7 @@
                         </div>
 
                         <div class="row mb-0">
-                            <div class="col-md-8 offset-md-2">
+                            <div class="col-md-8 offset-md-2 d-flex flex-wrap gap-2 align-items-center">
                                 <button type="submit" class="btn btn-primary button-back">
                                     {{ __('Login') }}
                                 </button>
@@ -67,6 +67,10 @@
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
+
+                                <a href="{{ route('google.redirect') }}" class="btn btn-outline-danger">
+                                    {{ __('Sign in with Google') }}
+                                </a>
                             </div>
                         </div>
                     </form>
