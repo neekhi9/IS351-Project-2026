@@ -16,7 +16,8 @@ RUN docker-php-ext-install \
     pdo_pgsql \
     mbstring \
     bcmath \
-    zip
+    zip \
+    int1
 
 # Install Node.js 
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
