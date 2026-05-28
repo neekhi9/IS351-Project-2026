@@ -51,8 +51,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
 
-    // Customer flows
-    Route::middleware('role:customer')->group(function () {
+    // All authenticated users can browse menu, place orders, and reserve tables
+    Route::middleware('role:admin|staff|customer')->group(function () {
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
         Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
