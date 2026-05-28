@@ -24,23 +24,13 @@ RUN apt-get update && apt-get install -y \
 # ----------------------------
 # PHP extensions
 # ----------------------------
-RUN docker-php-ext-configure gd \
-    --with-freetype \
-    --with-jpeg
+# Configure GD with freetype and jpeg support
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
-RUN docker-php-ext-install \
-    pdo \
-    pdo_pgsql \
-    mbstring \
-    bcmath \
-    zip \
-    intl \
-    exif \
-    pcntl \
-    gd \
-    tokenizer \
-    ctype \
-    xml
+# Install extensions in groups
+RUN docker-php-ext-install pdo pdo_pgsql mbstring bcmath zip
+RUN docker-php-ext-install intl exif pcntl
+RUN docker-php-ext-install gd xml
 
 # ----------------------------
 # Composer
