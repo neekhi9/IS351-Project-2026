@@ -49,8 +49,7 @@ RUN php artisan route:cache || true
 RUN php artisan view:cache || true
 
 # Frontend
-RUN npm ci
-RUN npm run build
+RUN npm install && npm run build
 
 # Permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
