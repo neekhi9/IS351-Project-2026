@@ -24,13 +24,19 @@ RUN apt-get update && apt-get install -y \
 # ----------------------------
 # PHP extensions
 # ----------------------------
-# Configure GD with freetype and jpeg support
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
-# Install extensions in groups
-RUN docker-php-ext-install pdo pdo_pgsql mbstring bcmath zip
-RUN docker-php-ext-install intl exif pcntl
-RUN docker-php-ext-install gd xml
+RUN docker-php-ext-install \
+    pdo \
+    pdo_pgsql \
+    mbstring \
+    bcmath \
+    zip \
+    intl \
+    exif \
+    pcntl \
+    gd \
+    xml
 
 # ----------------------------
 # Composer
@@ -47,6 +53,9 @@ WORKDIR /var/www
 
 # Copy composer files first (for caching)
 COPY composer.json composer.lock ./
+
+# Ensure permissions before install
+RUN chown -R www-data:www-data /var/www
 
 # Install PHP dependencies (verbose logs)
 RUN composer install \
