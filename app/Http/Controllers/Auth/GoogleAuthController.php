@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Spatie\Permission\Models\Role;
 
 class GoogleAuthController extends Controller
 {
@@ -84,6 +85,11 @@ class GoogleAuthController extends Controller
         if (!$user->email_verified_at) {
             $user->email_verified_at = now();
             $user->save();
+        }
+
+        $customerRole = Role::firstOrCreate(['name' => 'customer']);
+        if (!$user->hasRole($customerRole->name)) {
+            $user->assignRole($customerRole);
         }
 
         Auth::login($user, true);
