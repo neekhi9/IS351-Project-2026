@@ -1,13 +1,13 @@
 FROM php:8.2-fpm
 
+# ----------------------------
 # System dependencies
+# ----------------------------
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     zip \
     unzip \
-    nodejs \
-    npm \
     libpq-dev \
     libonig-dev \
     libzip-dev \
@@ -15,10 +15,18 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libpng-dev \
     libjpeg62-turbo-dev \
-    libfreetype6-dev
+    libfreetype6-dev \
+    pkg-config \
+    nodejs \
+    npm \
+    && rm -rf /var/lib/apt/lists/*
 
+# ----------------------------
 # PHP extensions
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+# ----------------------------
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg
 
 RUN docker-php-ext-install \
     pdo \
@@ -31,15 +39,20 @@ RUN docker-php-ext-install \
     pcntl \
     gd
 
-# Install Composer
+# ----------------------------
+# Composer
+# ----------------------------
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# ----------------------------
+# App directory
+# ----------------------------
 WORKDIR /var/www
 
-# Copy composer files first
+# Copy composer files first (for caching)
 COPY composer.json composer.lock ./
 
-# Install dependencies
+# Install PHP dependencies
 RUN composer install \
     --no-dev \
     --no-interaction \
@@ -47,11 +60,16 @@ RUN composer install \
     --optimize-autoloader \
     -vvv
 
-# Copy app
+# Copy full project
 COPY . .
 
-# Frontend
+# ----------------------------
+# Node dependencies + build
+# ----------------------------
 RUN npm install
 RUN npm run build
 
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+# ----------------------------
+# Permissions (important for Laravel)
+# ----------------------------
+RUN chmod -R 775 storage bootstrap/cache || true
