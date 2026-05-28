@@ -37,12 +37,18 @@ RUN docker-php-ext-install \
     intl \
     exif \
     pcntl \
-    gd
+    gd \
+    tokenizer \
+    ctype \
+    xml
 
 # ----------------------------
 # Composer
 # ----------------------------
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Composer memory fix
+ENV COMPOSER_MEMORY_LIMIT=-1
 
 # ----------------------------
 # App directory
@@ -52,13 +58,13 @@ WORKDIR /var/www
 # Copy composer files first (for caching)
 COPY composer.json composer.lock ./
 
-# Install PHP dependencies
+# Install PHP dependencies (verbose logs)
 RUN composer install \
     --no-dev \
     --no-interaction \
     --prefer-dist \
     --optimize-autoloader \
-    -vvv
+    -vvv --prefer-ipv4
 
 # Copy full project
 COPY . .
@@ -72,6 +78,7 @@ RUN npm run build
 # ----------------------------
 # Permissions (important for Laravel)
 # ----------------------------
-RUN chmod -R 775 storage bootstrap/cache || true
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 775 storage bootstrap/cache || true
 
 CMD php artisan serve --host=0.0.0.0 --port=$PORT
