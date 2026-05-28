@@ -36,8 +36,6 @@ RUN composer install \
     --prefer-dist \
     --optimize-autoloader \
     --no-scripts
-    
-RUN composer install --no-dev --optimize-autoloader
 
 COPY . .
 
