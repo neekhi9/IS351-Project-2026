@@ -6,6 +6,7 @@
 - [x] Fix Linux case-sensitive asset path for welcome CSS.
 - [x] Make session driver safe by default for environments without `sessions` table migration applied.
 - [ ] Implement security hardening: SQLi/XSS/validation/HTTPS/cookies-CSRF/auth/Google OAuth/cloud config.
+- [x] Fix Google OAuth redirect_uri missing error by enforcing callback redirect config and clearing cached config.
 - [ ] Verify app boots and config is valid after changes.
 - [ ] Provide Render deploy/cache checklist to apply fixes.
 - [x] Update branding text from FCCC to IS351 in layout and mail subjects.

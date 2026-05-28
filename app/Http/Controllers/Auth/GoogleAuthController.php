@@ -15,6 +15,7 @@ class GoogleAuthController extends Controller
     public function redirect()
     {
         return Socialite::driver('google')
+            ->redirectUrl(config('services.google.redirect') ?: route('google.callback'))
             ->stateless()
             ->redirect();
     }
@@ -25,6 +26,7 @@ class GoogleAuthController extends Controller
     public function callback()
     {
         $googleUser = Socialite::driver('google')
+            ->redirectUrl(config('services.google.redirect') ?: route('google.callback'))
             ->stateless()
             ->user();
 
