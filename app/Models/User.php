@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable , HasRoles;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -60,5 +60,15 @@ class User extends Authenticatable implements MustVerifyEmail
         // Fallback to avatar service
         $name = urlencode($this->name ?? 'User');
         return "https://ui-avatars.com/api/?name={$name}&background=0D8ABC&color=fff";
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
     }
 }

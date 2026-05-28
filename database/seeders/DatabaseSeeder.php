@@ -14,22 +14,46 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed permissions and roles
         $this->call(PermissionSeeder::class);
 
-        // Create a default test user and assign admin for initial access
-        $user = User::firstOrCreate(
-            ['email' => 'test@example.com'],
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $staffRole = Role::firstOrCreate(['name' => 'staff']);
+        $customerRole = Role::firstOrCreate(['name' => 'customer']);
+
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@restaurant.local'],
             [
-                'name' => 'Test User',
-                'password' => bcrypt('password'), // placeholder, OTP login preferred
+                'name' => 'Restaurant Admin',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now(),
             ]
         );
+        if (!$admin->hasRole($adminRole->name)) {
+            $admin->assignRole($adminRole);
+        }
 
-        // Ensure role exists and assign
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        if (!$user->hasRole($adminRole->name)) {
-            $user->assignRole($adminRole);
+        $staff = User::firstOrCreate(
+            ['email' => 'staff@restaurant.local'],
+            [
+                'name' => 'Kitchen Staff',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now(),
+            ]
+        );
+        if (!$staff->hasRole($staffRole->name)) {
+            $staff->assignRole($staffRole);
+        }
+
+        $customer = User::firstOrCreate(
+            ['email' => 'customer@restaurant.local'],
+            [
+                'name' => 'Default Customer',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now(),
+            ]
+        );
+        if (!$customer->hasRole($customerRole->name)) {
+            $customer->assignRole($customerRole);
         }
     }
 }

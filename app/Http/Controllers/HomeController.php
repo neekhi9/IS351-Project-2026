@@ -17,19 +17,24 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show role-based dashboard.
      *
-     * Admins are redirected to the admin registrations dashboard.
-     * Regular users see the normal home view.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
         $user = auth()->user();
 
-        if ($user && method_exists($user, 'hasRole') && $user->hasRole('admin')) {
-            return redirect()->route('admin.registrations.index');
+        if ($user && method_exists($user, 'hasRole')) {
+            if ($user->hasRole('admin')) {
+                return redirect()->route('admin.dashboard');
+            }
+
+            if ($user->hasRole('staff')) {
+                return redirect()->route('kitchen.index');
+            }
+
+            return redirect()->route('customer.dashboard');
         }
 
         return view('home');
