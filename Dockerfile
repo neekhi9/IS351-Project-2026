@@ -1,30 +1,77 @@
+# =========================
+# PHP BASE (Render-friendly)
+# =========================
 FROM php:8.2-fpm
 
-# Install system dependencies
+WORKDIR /var/www/html
+
+# =========================
+# SYSTEM DEPENDENCIES
+# =========================
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip \
-    libpq-dev libonig-dev libzip-dev
+    git \
+    curl \
+    unzip \
+    zip \
+    libzip-dev \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    nodejs \
+    npm \
+    && docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    zip
 
-# Install PHP extensions
-RUN docker-php-ext-install \
-    pdo pdo_pgsql mbstring bcmath zip
+# =========================
+# COMPOSER
+# =========================
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Install Node.js (THIS FIXES YOUR ERROR)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs
-
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-WORKDIR /var/www
-
+# =========================
+# COPY PROJECT FILES
+# (important for Render build cache)
+# =========================
 COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+# =========================
+# ENV SAFETY FOR RENDER
+# =========================
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_MEMORY_LIMIT=-1
 
-# Install Node dependencies + build Vite
-RUN npm install
-RUN npm run build
+# =========================
+# INSTALL PHP DEPENDENCIES
+# =========================
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction \
+    --prefer-dist
 
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+# =========================
+# INSTALL FRONTEND + BUILD VITE
+# =========================
+RUN npm install && npm run build
+
+# =========================
+# FIX PERMISSIONS (Render needs this)
+# =========================
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 storage bootstrap/cache
+
+# =========================
+# RENDER PORT (important!)
+# =========================
+ENV PORT=10000
+EXPOSE 10000
+
+# =========================
+# START SERVER (Render uses this)
+# =========================
+CMD php -S 0.0.0.0:$PORT -t public
