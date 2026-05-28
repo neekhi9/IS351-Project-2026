@@ -1,83 +1,30 @@
 FROM php:8.2-fpm
 
-# ----------------------------
-# System dependencies
-# ----------------------------
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    zip \
-    unzip \
-    libpq-dev \
-    libonig-dev \
-    libzip-dev \
-    libicu-dev \
-    libxml2-dev \
-    libpng-dev \
-    libjpeg62-turbo-dev \
-    libfreetype6-dev \
-    pkg-config \
-    nodejs \
-    npm \
-    && rm -rf /var/lib/apt/lists/*
+    git curl zip unzip \
+    libpq-dev libonig-dev libzip-dev
 
-# ----------------------------
-# PHP extensions
-# ----------------------------
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-
+# Install PHP extensions
 RUN docker-php-ext-install \
-    pdo \
-    pdo_pgsql \
-    mbstring \
-    bcmath \
-    zip \
-    intl \
-    exif \
-    pcntl \
-    gd \
-    xml
+    pdo pdo_pgsql mbstring bcmath zip
 
-# ----------------------------
-# Composer
-# ----------------------------
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+# Install Node.js (THIS FIXES YOUR ERROR)
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs
 
-# Composer memory fix
-ENV COMPOSER_MEMORY_LIMIT=-1
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# ----------------------------
-# App directory
-# ----------------------------
 WORKDIR /var/www
 
-# Copy composer files first (for caching)
-COPY composer.json composer.lock ./
-
-# Ensure permissions before install
-RUN chown -R www-data:www-data /var/www
-
-# Install PHP dependencies (verbose logs)
-RUN composer install \
-    --no-dev \
-    --no-interaction \
-    --prefer-dist \
-    --optimize-autoloader \
-    -vvv --prefer-ipv4
-
-# Copy full project
 COPY . .
 
-# ----------------------------
-# Node dependencies + build
-# ----------------------------
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Install Node dependencies + build Vite
 RUN npm install
 RUN npm run build
-
-# ----------------------------
-# Permissions (important for Laravel)
-# ----------------------------
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 775 storage bootstrap/cache || true
 
 CMD php artisan serve --host=0.0.0.0 --port=$PORT
