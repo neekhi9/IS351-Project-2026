@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libpq-dev \
     libonig-dev \
-    libzip-dev
+    libzip-dev \
+    libicu-dev
 
 # Install PHP extensions
 RUN docker-php-ext-install \
