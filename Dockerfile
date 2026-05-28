@@ -1,77 +1,37 @@
-# =========================
-# PHP BASE (Render-friendly)
-# =========================
 FROM php:8.2-fpm
 
-WORKDIR /var/www/html
-
-# =========================
-# SYSTEM DEPENDENCIES
-# =========================
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    unzip \
-    zip \
-    libzip-dev \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    nodejs \
-    npm \
-    && docker-php-ext-install \
-    pdo_mysql \
-    mbstring \
-    exif \
-    pcntl \
-    bcmath \
-    gd \
-    zip
+    git curl zip unzip \
+    libpq-dev libonig-dev libzip-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# =========================
-# COMPOSER
-# =========================
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+# Install PHP extensions
+RUN docker-php-ext-install pdo pdo_pgsql mbstring bcmath zip
 
-# =========================
-# COPY PROJECT FILES
-# (important for Render build cache)
-# =========================
+# Install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www
+
 COPY . .
 
-# =========================
-# ENV SAFETY FOR RENDER
-# =========================
-ENV COMPOSER_ALLOW_SUPERUSER=1
-ENV COMPOSER_MEMORY_LIMIT=-1
+# Install dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+RUN npm ci && npm run build
 
-# =========================
-# INSTALL PHP DEPENDENCIES
-# =========================
-RUN composer install \
-    --no-dev \
-    --optimize-autoloader \
-    --no-interaction \
-    --prefer-dist
+# Laravel required writable dirs
+RUN mkdir -p storage/framework/{cache,sessions,views} bootstrap/cache \
+    && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# =========================
-# INSTALL FRONTEND + BUILD VITE
-# =========================
-RUN npm install && npm run build
+# Cache config/routes/views (optional but good)
+RUN php artisan config:clear && php artisan route:clear && php artisan view:clear
 
-# =========================
-# FIX PERMISSIONS (Render needs this)
-# =========================
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 storage bootstrap/cache
-
-# =========================
-# RENDER PORT (important!)
-# =========================
-ENV PORT=10000
 EXPOSE 10000
 
-# =========================
-# START SERVER (Render uses this)
-# =========================
-CMD php -S 0.0.0.0:$PORT -t public
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
