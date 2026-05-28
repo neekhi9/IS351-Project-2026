@@ -82,10 +82,10 @@
                         </ul>
                     </div> -->
                     
-                    <div class="flex gap-3 text-sm leading-normal" style="justify-content: center;" >
+                    <!-- <div class="flex gap-3 text-sm leading-normal" style="justify-content: center;" >
                         <a href="{{ route('registration.create') }}" class="inline-block dark:bg-[#0A5C45] dark:border-[#0A5C45] dark:text-white dark:hover:bg-[#0066cc] dark:hover:border-[#0066cc] hover:bg-[#0066cc] hover:border-[#0066cc] px-8 py-3 bg-[#0A5C45] rounded-sm border border-[#0A5C45] text-white text-base font-medium leading-normal transition-all duration-300" style="background-color: #4c1130; color:white !important; text-align: center; padding: 20px; color: black;">
                            Register Now
-                        </a>
+                        </a> -->
                         <!-- @auth
                             <a href="{{ url('/registration') }}" class="inline-block dark:bg-transparent dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b] hover:border-[#1915014a] px-8 py-3 
                             bg-transparent rounded-sm border border-[#19140035] text-[#1b1b18] text-base font-medium leading-normal transition-all duration-300" style="background-color: #4c1130; text-align: center; padding: 20px; color:white !important;">
