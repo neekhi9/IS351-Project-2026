@@ -22,7 +22,7 @@ class PHPMailerService
             return;
         }
 
-        $subject = 'FCCC - New Registration Submitted (' . ucfirst($registration->account_type) . ') #' . $registration->id;
+        $subject = 'IS351 - New Registration Submitted (' . ucfirst($registration->account_type) . ') #' . $registration->id;
 
         $html = View::make('emails.admin.registration_notification', [
             'registration' => $registration,
@@ -48,7 +48,7 @@ class PHPMailerService
         $registration->loadMissing(['city', 'region']);
 
         // Update subject to requested format
-        $subject = 'FCCC - Your Registration Has Been Received (Ref #' . $registration->id . ')';
+        $subject = 'IS351 - Your Registration Has Been Received (Ref #' . $registration->id . ')';
 
         $html = View::make('emails.registration_confirmation', [
             'registration' => $registration,
@@ -70,7 +70,7 @@ class PHPMailerService
             return;
         }
 
-        $subject = 'FCCC - Action Required: Fix Your Application (Ref #' . $registration->id . ')';
+        $subject = 'IS351 - Action Required: Fix Your Application (Ref #' . $registration->id . ')';
 
         $html = View::make('emails.invalid_notification', [
             'registration' => $registration,
@@ -93,7 +93,7 @@ class PHPMailerService
             return;
         }
 
-        $subject = 'FCCC - Your Application Has Been Approved';
+        $subject = 'IS351 - Your Application Has Been Approved';
 
         $html = View::make('emails.approved_notification', [
             'user' => $user,
@@ -116,7 +116,7 @@ class PHPMailerService
             return;
         }
 
-        $subject = 'FCCC - Your Application Has Been Declined (Ref #' . $registration->id . ')';
+        $subject = 'IS351 - Your Application Has Been Declined (Ref #' . $registration->id . ')';
 
         $html = View::make('emails.declined_notification', [
             'registration' => $registration,
@@ -135,7 +135,7 @@ class PHPMailerService
             return;
         }
 
-        $subject = 'FCCC - Your Login Link and OTP Code';
+        $subject = 'IS351 - Your Login Link and OTP Code';
 
         $html = View::make('emails.otp_link', [
             'verifyLink' => $verifyLink,

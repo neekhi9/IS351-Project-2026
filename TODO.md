@@ -7,3 +7,7 @@
 - [x] Make session driver safe by default for environments without `sessions` table migration applied.
 - [ ] Verify app boots and config is valid after changes.
 - [ ] Provide Render deploy/cache checklist to apply fixes.
+- [x] Update branding text from FCCC to IS351 in layout and mail subjects.
+- [x] Add registration success flash message after user signup and redirect to dashboard/home.
+- [ ] Validate forgot password workflow configuration and provide SMTP steps.
+- [x] Confirm seeded admin credentials from DatabaseSeeder.
