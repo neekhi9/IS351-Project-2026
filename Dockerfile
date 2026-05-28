@@ -73,3 +73,5 @@ RUN npm run build
 # Permissions (important for Laravel)
 # ----------------------------
 RUN chmod -R 775 storage bootstrap/cache || true
+
+CMD php artisan serve --host=0.0.0.0 --port=$PORT
