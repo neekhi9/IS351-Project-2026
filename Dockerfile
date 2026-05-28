@@ -29,7 +29,8 @@ WORKDIR /var/www
 
 COPY composer.json composer.lock ./
 
-# Install PHP dependenciesRUN composer install \
+# Install PHP dependencies
+RUN composer install \
     --no-dev \
     --no-interaction \
     --prefer-dist \
