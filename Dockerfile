@@ -18,7 +18,7 @@ RUN docker-php-ext-install \
     bcmath \
     zip
 
-# Install Node.js (THIS FIXES YOUR ERROR)
+# Install Node.js 
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
@@ -29,10 +29,15 @@ WORKDIR /var/www
 
 COPY composer.json composer.lock ./
 
+# Install PHP dependenciesRUN composer install \
+    --no-dev \
+    --no-interaction \
+    --prefer-dist \
+    --optimize-autoloader \
+    --no-scriptsRUN composer install --no-dev --optimize-autoloader
+
 COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
 
 # Install Node dependencies + build Vite
 RUN npm install
