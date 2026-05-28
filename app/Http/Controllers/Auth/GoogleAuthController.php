@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleAuthController extends Controller
@@ -14,8 +16,14 @@ class GoogleAuthController extends Controller
      */
     public function redirect()
     {
+        $callbackUrl = config('services.google.redirect') ?: route('google.callback', [], true);
+
         return Socialite::driver('google')
-            ->redirectUrl(config('services.google.redirect') ?: route('google.callback'))
+            ->scopes(['openid', 'profile', 'email'])
+            ->with([
+                'prompt' => 'select_account',
+            ])
+            ->redirectUrl($callbackUrl)
             ->stateless()
             ->redirect();
     }
@@ -25,10 +33,36 @@ class GoogleAuthController extends Controller
      */
     public function callback()
     {
-        $googleUser = Socialite::driver('google')
-            ->redirectUrl(config('services.google.redirect') ?: route('google.callback'))
-            ->stateless()
-            ->user();
+        if (request()->has('error')) {
+            Log::warning('Google OAuth callback returned error', [
+                'error' => request()->get('error'),
+                'error_description' => request()->get('error_description'),
+                'state' => request()->get('state'),
+            ]);
+
+            return redirect()->route('login')->withErrors([
+                'email' => 'Google sign-in was cancelled or failed. Please try again.',
+            ]);
+        }
+
+        $callbackUrl = config('services.google.redirect') ?: route('google.callback', [], true);
+
+        try {
+            $googleUser = Socialite::driver('google')
+                ->scopes(['openid', 'profile', 'email'])
+                ->redirectUrl($callbackUrl)
+                ->stateless()
+                ->user();
+        } catch (\Throwable $e) {
+            Log::error('Google OAuth callback exchange failed', [
+                'message' => $e->getMessage(),
+                'type' => get_class($e),
+            ]);
+
+            return redirect()->route('login')->withErrors([
+                'email' => 'Unable to sign in with Google at the moment. Please try again.',
+            ]);
+        }
 
         $email = strtolower(trim((string) $googleUser->getEmail()));
 
@@ -42,7 +76,7 @@ class GoogleAuthController extends Controller
             ['email' => $email],
             [
                 'name' => $googleUser->getName() ?: $googleUser->getNickname() ?: 'Google User',
-                'password' => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(40)),
+                'password' => \Illuminate\Support\Facades\Hash::make(Str::random(40)),
                 'email_verified_at' => now(),
             ]
         );

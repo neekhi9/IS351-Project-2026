@@ -8,6 +8,9 @@
 - [ ] Implement security hardening: SQLi/XSS/validation/HTTPS/cookies-CSRF/auth/Google OAuth/cloud config.
 - [x] Fix Google OAuth redirect_uri missing error by enforcing callback redirect config and clearing cached config.
 - [ ] Verify app boots and config is valid after changes.
+- [ ] Audit and harden Google OAuth request/callback flow for invalid_request handling.
+- [ ] Add robust Google OAuth callback error handling and logging.
+- [ ] Validate Google OAuth route + redirect URI consistency (app URL, callback, env).
 - [ ] Provide Render deploy/cache checklist to apply fixes.
 - [x] Update branding text from FCCC to IS351 in layout and mail subjects.
 - [x] Add registration success flash message after user signup and redirect to dashboard/home.
