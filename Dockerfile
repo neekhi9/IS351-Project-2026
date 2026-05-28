@@ -34,7 +34,9 @@ COPY composer.json composer.lock ./
     --no-interaction \
     --prefer-dist \
     --optimize-autoloader \
-    --no-scriptsRUN composer install --no-dev --optimize-autoloader
+    --no-scripts
+    
+RUN composer install --no-dev --optimize-autoloader
 
 COPY . .
 
