@@ -7,6 +7,19 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
+    /**
+     * Maximum number of login attempts.
+     *
+     * @var int
+     */
+    protected $maxAttempts = 5;
+
+    /**
+     * Number of minutes to throttle login attempts.
+     *
+     * @var int
+     */
+    protected $decayMinutes = 1;
     /*
     |--------------------------------------------------------------------------
     | Login Controller
