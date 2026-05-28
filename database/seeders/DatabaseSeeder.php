@@ -21,13 +21,18 @@ class DatabaseSeeder extends Seeder
         $customerRole = Role::firstOrCreate(['name' => 'customer']);
 
         $admin = User::firstOrCreate(
-            ['email' => 'admin@restaurant.local'],
+            ['email' => 'admin@example.com'],
             [
                 'name' => 'Restaurant Admin',
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]
         );
+        $admin->name = 'Restaurant Admin';
+        $admin->password = bcrypt('password');
+        $admin->email_verified_at = now();
+        $admin->save();
+
         if (!$admin->hasRole($adminRole->name)) {
             $admin->assignRole($adminRole);
         }
@@ -55,5 +60,7 @@ class DatabaseSeeder extends Seeder
         if (!$customer->hasRole($customerRole->name)) {
             $customer->assignRole($customerRole);
         }
+
+        $this->call(MenuSeeder::class);
     }
 }
