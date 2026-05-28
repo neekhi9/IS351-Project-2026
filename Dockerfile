@@ -22,6 +22,8 @@ COPY composer.json composer.lock ./
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+COPY . .
+
 # Install Node dependencies + build Vite
 RUN npm install
 RUN npm run build
